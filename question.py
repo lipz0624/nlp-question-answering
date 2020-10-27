@@ -1,10 +1,11 @@
-from dataclasses import dataclass
+# from dataclasses import dataclass
 from nltk import word_tokenize,pos_tag,ne_chunk,RegexpParser,tree
 from nltk.corpus import wordnet,stopwords
-import string
+import string  # TODO why import string?
 import spacy
 from spacy.tokens import Span
 from collections import OrderedDict
+from passage_retrieval import *
 
 # @dataclass
 # class Question:
@@ -139,8 +140,16 @@ if __name__ == "__main__":
     question = train_list[0]
     print(question)
     nlp = spacy.load('en_core_web_sm')
-    print(queryFormulation(nlp,question))
+    # get question
+    q_new = queryFormulation(nlp,question)
+    print(q_new)
+    # passage retrieval
+    corpus = createCorpus(q_new, docs_0, 'LA080989-0132')
+    retrieved_block = countFeatureVec(corpus)
+    print(retrieved_block)
+    # answer
     print(answerTypeDetection(nlp,question))
+    
     #-----below is example code from spacy API--------
     # print([(w.text, w.pos_) for w in doc])
     # for ent in doc.ents:

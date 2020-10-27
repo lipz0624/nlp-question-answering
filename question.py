@@ -2,6 +2,9 @@ from dataclasses import dataclass
 from nltk import word_tokenize,pos_tag,ne_chunk,RegexpParser,tree
 from nltk.corpus import wordnet,stopwords
 import string
+import spacy
+from spacy.tokens import Span
+from collections import OrderedDict
 
 # @dataclass
 # class Question:
@@ -18,8 +21,9 @@ def read_questions(input_file):
     so in dict questions --> Key = question(str) Value = number(int)
     """
     questions = {}
-    with open(input_file, 'r',encoding='utf-8-sig') as f:
-        sents = [line.strip().split() for line in f]
+    remove_punc = str.maketrans('', '', string.punctuation)
+    with open(input_file, 'r',encoding='utf-8-sig') as file:
+        sents = [line.strip().split() for line in file]
         for element in sents:
             if len(element) == 0:
                 sents.remove(element)
@@ -27,92 +31,105 @@ def read_questions(input_file):
             if sents[i][0] == 'Number:':
                 value = sents[i][1]
                 key = ' '.join(sents[i+1])
+                key = key.translate(remove_punc) #remove punctuation
                 questions[key] = value
     return questions
-
-def findQueType(question):
+#####################Question Processing####################################
+def queryFormulation(nlp,question):
     """
-    To determine type of question by analyzing POS tag of question
-    """
-    # WP -> who, WDT -> what, why, how, WP$ -> whose , WRB -> where
-    questionTags = ['WP','WDT','WP$','WRB']
-    qpos_tag = pos_tag(word_tokenize(question))
-    qTags = []
-    ## special case: name a ...
-    for pair in qpos_tag:
-        if pair[1] in questionTags:
-            qTags.append(pair[1])
-    queType = ''
-    if(len(qTags) == 1):
-        queType = qTags[0]
-    elif(len(qTags) > 1):
-        queType = 'Multi'
-    else:
-        if word_tokenize(question)[0] == 'Name':
-            queType = 'List'
-        else:
-            queType = 'None'
-    return queType
-
-# def findAnsType(question):
-#     """
-#     Determine the answer type of the question
-#     """
-#     questionTags = ['WP','WDT','WP$','WRB']
-#     q = question.lower()
-#     qPOS = pos_tag(word_tokenize(q))
-#     qTag = None
-#     for pair in qPOS:
-#         if pair[1] in questionTags:
-#             qTag = pair[0]
-#             break
-
-#     if qTag == 'where':
-#         return 'Location'
-#     elif qTag == 'who':
-#         return 'Person'
-#     elif qTag == 'when':
-#         return 'Date'
-#     elif qTag == 'what':
-#         ####DIFFICULT TO DISTINGUISH
-#         for pair in qPOS:
-#             if pair[0] in ['is','are','was','were',"'s"]:
-#                 return 'Definition'
-#             elif pair[0] in ['city','area','state','continent','province']:
-#                 return 'Location'
-#             elif 'year'  in q:
-#                 return 'Date'
-#             else: #otherwise, we are not sure about answer type
-#                 return 'UNK'
-#     else:
-#         return 'None'
-
-def formQuery(question):
-    """
-    Based on keyword Selection Algorithm do the query formulation;
-    1. select all non-stop words
+    Based on Keyword Selection Algorithm do the query formulation;
+    1. remove stopwords that do not help identifying relevant documents,
+        including too common words and purelt functional words 
     2. select all NNP words in recognized named entities
+    3. select all nouns with their adjectival modifiers
+    4. select all verbs
     """
-    query = []
-    remove_punc = str.maketrans('', '', string.punctuation)
-    ##baseline system ==> remove stop words
-    stop_words = set(stopwords.words('english')) 
-    question = question.strip().translate(remove_punc)
+    key_query = [] #the list recording the key query
+    # ##baseline system ==> remove stop words
+    stop_words = set(stopwords.words('english'))
     word_tokens = word_tokenize(question)
-    ## always lower the first word --- NOT SURE
-    word_tokens[0] = word_tokens[0].lower()
     filter_stopWords = [w for w in word_tokens if not w in stop_words]
-    chunkTree = ne_chunk(pos_tag(filter_stopWords))
-    #-----need fix to contain all NNP words and all complex nominal------
-    # pattern= "NP: {<DT>?<JJ|PR.>*<NN|NNS>}"
-    # np_parser = RegexpParser(pattern)
-    # T2 = np_parser.parse(chunkTree)
-    # for child in T2:
-    #     if type(child) == tree.Tree:
-    #         entities = ' '.join(x[0] for x in child.leaves())
-    #         query.append(entities)
-    return filter_stopWords
+    sentence = ' '.join(filter_stopWords) ##sentence after removing stop words
+    doc = nlp(sentence)
+    for entity in doc.ents: ##second step:select all NNP words(named entities)
+        # key_query.append((entity.text,entity.label_))
+        key_query.append(entity.text)
+    for word in doc:
+        if word.pos_ == 'NOUN':
+            if word.n_lefts > 0:
+                for token in word.lefts:
+                    #select adjectival modifiers of nouns
+                    # key_query.append((token.lemma_,token.pos_))
+                    key_query.append(token.lemma_)
+            ##always select noun
+            # key_query.append((word.lemma_,word.pos_))
+            key_query.append(word.lemma_)
+        if word.pos_ == "VERB": #select all verbs
+            # key_query.append((word.lemma_,word.pos_))
+            key_query.append(word.lemma_)
+    return list(OrderedDict.fromkeys(key_query))
 
+def answerTypeDetection(nlp,question):
+    """
+    Determine type of expected answer depending of question type
+    Type of answer among following --> 
+    PERSON, LOCATION, DATE, ORGANIZATION, QUANTITY, DEFINITION, ENTITY, UNK
+    """
+    q_Tags = ['WP','WDT','WRB'] ##WP ->  who WDT -> what, why, how, WRB -> where 
+    qPOS = pos_tag(word_tokenize(question)) #add pos tagging for every word in question
+    qTag = None
+
+    for token in qPOS:
+        if token[1] in q_Tags:#if any pos tag is in the question tags
+            qTag = token[0].lower()
+            break
+    
+    if(qTag == None):
+        if len(qPOS) > 1:
+            if qPOS[0][0].lower() == 'can':
+                return "AFFIRMATION"
+            elif qPOS[0][0].lower() == 'whats':
+                qTag = "what"
+
+    if qTag == "who":
+        return "PERSON"
+    elif qTag == "where":
+        return "LOCATION"
+    elif qTag == "when":
+        return "DATE"
+    elif qTag == "what":
+        doc = nlp(question)
+        #usually definition problem always start with is/are/was/were
+        #so we pay attention to the rest part
+        rest_chunk = ' '.join(question.split()[2:])
+        if qPOS[1][0] in ['is','are','was','were']:
+            rest = nlp(rest_chunk)
+            for chunk in rest.noun_chunks:
+                if rest_chunk == chunk.text:
+                    return "DEFINITION"
+        
+        ##other rules use the headword of the first noun phrase after what
+        # for word in doc:
+        #     if word.pos_ == "NOUN":
+        #         print('----------')
+        #         print(word.text)
+        #         print(word.head.text)
+        #         if word.head.lemma_ in ['city','country','state','continent']:
+        #             return "LOCATION"
+        #         elif word.head.lemma_ in ['flower','animal']:
+        #             return "ENTITY"
+        #         elif word.head.lemma_ in ['name','']:
+        #             return "Name"
+        return "UNK"
+
+    elif qTag == "how":
+        if len(qPOS)>1:
+            t2 = qPOS[2]
+            if t2[0].lower() in ['many','much']:
+                return "QUANTITY"    
+        return "UNK"
+    else:
+        return "UNK"
 
 if __name__ == "__main__":
     questions = read_questions("hw6_data/training/qadata/questions.txt")
@@ -120,8 +137,14 @@ if __name__ == "__main__":
     for key in questions:
         train_list.append(key)
     question = train_list[0]
-    number = questions[question]
-    print(formQuery(question))
-    # print(number)
-    # print(findQueType(question))
-    # print(findAnsType(question))
+    print(question)
+    nlp = spacy.load('en_core_web_sm')
+    print(queryFormulation(nlp,question))
+    print(answerTypeDetection(nlp,question))
+    #-----below is example code from spacy API--------
+    # print([(w.text, w.pos_) for w in doc])
+    # for ent in doc.ents:
+    #     print(ent.text, ent.start_char, ent.end_char, ent.label_)
+    # sent = spu(question)
+    # for entity in sent.ents:
+    #     print(entity.text + ' - ' + entity.label_ + ' - ' + str(spacy.explain(entity.label_)))

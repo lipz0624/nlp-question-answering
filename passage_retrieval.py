@@ -4,9 +4,9 @@ from nltk import word_tokenize
 # from gensim.models import Word2Vec
 import re
 
-prefix = 'hw6_data/training/topdocs/top_docs.0' # hardcoded here TODO need change
+prefix = 'hw6_data/training/topdocs/top_docs.' # hardcoded here TODO need change
 N = 20 # chunk size
-R_SIZE = 100 # the number of retrieved passage
+R_SIZE = 10 # the number of retrieved passage
 
 def parse(filename):
   ''' read topdocs file and return a dictionary {docno : text}
@@ -25,7 +25,7 @@ def parse(filename):
         readmode = True
       elif '</TEXT>' in line:
         readmode = False
-        # text = text.replace('\n', ' ')
+        text = text.replace('\n', ' ')
         docs[docno] = text
       elif readmode :
         # TODO find a good way to read, so far: some words are connected
@@ -35,22 +35,26 @@ def parse(filename):
   # print(docs['LA080989-0132'])
   return docs
 
-def createCorpus(question, topdocs, id=''):
+
+def createCorpus(question, index, switch=False):
   '''id not empty for training where we only read one document and tokenized to 20, 
   false for test where we read 50 docs'''
+  filename = prefix + str(index)
+  topdocs = parse(filename)
+  # print("len of topdocs: ", len(topdocs))
   data_corpus = [' '.join(question)]
-  if id != '' :
-    data_corpus += chunk(topdocs[id])
+  if switch:
+    data_corpus += chunk(topdocs[relevant[index]])
   else:
-    for doc in top_docs:
-      data_corpus += chunk(doc)
+    for doc in topdocs:
+      # print(doc)
+      data_corpus += chunk(topdocs[doc])
 
-  # print(data_corpus)
+  # print(len(data_corpus))
   return data_corpus
 
 def chunk(doc):
   l = []
-  # words = word_tokenize(doc)
   words = doc.split()
   blocks = [words[i:i + N] for i in range(0, len(words), N)]
   for b in blocks:
@@ -59,24 +63,35 @@ def chunk(doc):
 
 def countFeatureVec(data):
   vectorizer=CountVectorizer()
-  vocabulary=vectorizer.fit(data)
-  X = vectorizer.transform(data)
+  X = vectorizer.fit_transform(data)
   a = X.toarray()
   # print(a)
   cos = {}
   for i in range(1, len(a)):
     cos_sim = cosine_similarity([a[0]], [a[i]])
     cos[i] = cos_sim.tolist()[0][0]
-  # print(type(cos[1]))
   cos_sort = sorted(cos, key=cos.get, reverse=True)
+  # print(len(cos_sort))
   ans = []
-  for i in range(R_SIZE):
-    ans.append(data[cos_sort[i]])
+  i = 0
+  while len(ans) != R_SIZE:
+    if data[cos_sort[i]] not in ans:
+      ans.append(data[cos_sort[i]])
+    i += 1
   # print(ans)
   # print(X.toarray())
-  # print(vocabulary.get_feature_names())
   return ans
 
+def parseRelevantDocs(filename):
+  relevant_docs = {}
+  with open(filename, 'r', encoding='utf-8-sig') as f:
+    for line in f:
+      l = line.split()
+      relevant_docs[int(l[0])] = l[1]
+  return relevant_docs
+
+# docs_0 = parse(prefix)
+relevant = parseRelevantDocs('hw6_data/training/qadata/relevant_docs.txt')
+# print(relevant)
 
 
-docs_0 = parse(prefix)

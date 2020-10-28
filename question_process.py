@@ -75,15 +75,17 @@ def answerTypeDetection(nlp,question):
     Type of answer among following --> 
     PERSON(include ORGANIZATION), LOCATION, DATE, QUANTITY, DEFINITION, ABBREV,UNK
     """
-    q_Tags = ['WP','WDT','WRB'] ##WP ->  who WDT -> what, why, how, WRB -> where 
+    # t_question = "kind of a sports team is the Wisconsin Badgers?"
+    q_Tags = ['WP','WDT','WRB'] ##WP ->  who, what WRB -> where, how, when
     qPOS = pos_tag(word_tokenize(question)) #add pos tagging for every word in question
+    # print(qPOS)
     qTag = None
 
     for token in qPOS:
-        if token[1] in q_Tags:#if any pos tag is in the question tags
+        if token[1] in q_Tags: #if any pos tag is in the question tags
             qTag = token[0].lower()
             break
-    
+    # print(qTag)
     if(qTag == None):
         if len(qPOS) > 1:
             if qPOS[0][0].lower() == 'whats':
@@ -95,25 +97,14 @@ def answerTypeDetection(nlp,question):
         return "LOCATION"
     elif qTag == "when":
         return "DATE"
-    elif qTag == "what":
-        # doc = nlp(question)
-        #usually definition problem always start with is/are/was/were
-        #so we pay attention to the rest part
-        rest_chunk = ' '.join(question.split()[2:])
-        if ' '.join(question.split()[-2:]) == 'stand for?':
-            return "ABBREV"
-        if qPOS[1][0] in ['is','are','was','were']:
-            rest = nlp(rest_chunk)
-            for chunk in rest.noun_chunks:
-                if rest_chunk == chunk.text:
-                    return "DEFINITION"
-        
+    elif qTag == "what":  
         ##other rules use the headword of the first noun phrase after what
         t = ne_chunk(qPOS)
         flag_what = False #only become true when after what
         Pattern = "NP: {<DT>?<JJ|PR.>*<NN|NNS>}"
         np_parser = RegexpParser(Pattern)
         T = np_parser.parse(t)
+        # print(T)
         for child in T:
             if type(child) == tuple:
                 if child[1] == 'WP':
@@ -129,10 +120,8 @@ def answerTypeDetection(nlp,question):
             return "LOCATION"
         elif answer in ['time','year','date','day']:
             return "DATE"
-        elif answer in ['abbreviation']:
-            return "ABBREV"
-        else:
-            return "UNK"
+        elif answer in ['price'] :
+            return "QUANTITY"
         return "UNK"
     elif qTag == "how":
         if len(qPOS)>1:
@@ -155,8 +144,8 @@ if __name__ == "__main__":
     q_new = queryFormulation(nlp,question)
     print(q_new)
     # passage retrieval
-    corpus = createCorpus(q_new, docs_0, 'LA080989-0132')
+    corpus = createCorpus(q_new, 0, False)
     retrieved_block = countFeatureVec(corpus)
-    print(retrieved_block)
+    print("Retrieved block\n", retrieved_block)
     # answer
     print(answerTypeDetection(nlp,question))

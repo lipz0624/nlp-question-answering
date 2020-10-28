@@ -63,20 +63,16 @@ def rank_answer(passages,question):
             for child in T:
                 # print(type(child))
                 if type(child) == Tree:
-                    label = child.label()
                     # print(label)
-                    if label == "NP":
-                        # print(child.leaves())
-                        answer = child.leaves()[-1][0]
-                        if answer in q_str:##we dont want entity occured in the question
-                            continue
-                        else:
-                            candidates.append(answer)
-        ##TODO: whether add definition as an answerType because it 
-        # should return the whole sentence inteand of just one word
+                    # print(child.leaves())
+                    answer = ' '.join(x[0] for x in  child.leaves())
+                    # print('np:' + answer)
+                    if answer in q_str:##we dont want entity occured in the question
+                        continue
+                    else:
+                        candidates.append(answer)
     candidateAnswer = list(OrderedDict.fromkeys(candidates))
     return candidateAnswer[:10]
-
 
 
 def writeAns(filename, answers, qid):
@@ -86,11 +82,14 @@ def writeAns(filename, answers, qid):
             f.write(ans + '\n')
 
 
-
+# passages = ['How many team did Wayne Gretzky play for zip at 11?']
+# question = 'How many is hockey team?'
+# answer = rank_answer(passages,question)
+# print(answer)
 
 # nlp = spacy.load('en_core_web_sm')
 # text = "what Paige is at hotel yesterday night 12:30 at $2, Janurary 1937, there are two apples and 7 bananas"
-# # answerTypeDetection(nlp, text)
+# answerTypeDetection(nlp, question)
 # doc = nlp(text)
 # print("ENTITY:", doc.ents)
 # for a in doc.ents:

@@ -15,10 +15,11 @@ def rank_answer(passages,question):
     candidates = []
     ##expected answer type
     answerType = answerTypeDetection(nlp,question)
+    print(question, answerType)
     keyQuery = queryFormulation(nlp,question)
     q_str = ' '.join(keyQuery)
     for passage in passages:#every passage(string)
-        if len(candidates) > 10:
+        if len(candidates) == 10:
             break
         doc = nlp(passage)
         if answerType == "PERSON":
@@ -49,7 +50,7 @@ def rank_answer(passages,question):
                         candidates.append(answer)
         elif answerType == "QUANTITY":
             for entity in doc.ents:
-                if entity.label_ == "MONEY" or entity.label_ == "CARDINAL":
+                if entity.label_ == "MONEY" or entity.label_ == "CARDINAL" or entity.label_ == "QUANTITY":
                     #We want to include all these NE as possible answers
                     answer = entity.text
                     if answer in q_str:##we dont want entity occured in the question

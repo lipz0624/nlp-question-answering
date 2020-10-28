@@ -122,7 +122,7 @@ def answerTypeDetection(nlp,question):
         return "UNK"
     elif qTag == "how":
         if len(qPOS)>1:
-            t2 = qPOS[2]
+            t2 = qPOS[1]
             if t2[0].lower() in ['many','much']:
                 return "QUANTITY"    
         return "UNK"
@@ -149,7 +149,7 @@ if __name__ == "__main__":
         q_new = queryFormulation(nlp,question)
         # print(q_new)
         # passage retrieval
-        corpus = createCorpus(q_new, key, True)
+        corpus = createCorpus(q_new, key, False)
         retrieved_block = countFeatureVec(corpus)
         # print("Retrieved block\n", retrieved_block)
         # answer

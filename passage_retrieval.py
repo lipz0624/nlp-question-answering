@@ -5,7 +5,7 @@ from nltk import word_tokenize
 import re
 
 prefix = 'hw6_data/training/topdocs/top_docs.' # hardcoded here TODO need change
-N = 20 # chunk size
+N = 40 # chunk size
 R_SIZE = 10 # the number of retrieved passage
 
 def parse(filename):
@@ -80,8 +80,8 @@ def countFeatureVec(data):
   i = 0
   while len(ans) != R_SIZE and i < len(cos_sort):
     # print(cos_sort[i])
-    if data[cos_sort[i]] not in ans:
-      ans.append(data[cos_sort[i]])
+    # if data[cos_sort[i]] not in ans:
+    ans.append(data[cos_sort[i]])
     i += 1
   # print(ans)
   # print(X.toarray())

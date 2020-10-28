@@ -39,23 +39,13 @@ def rank_answer(passages,question):
             ##TODO: extract time in passages
             answer = -1
             candidates.append(answer)
-        elif answerType == "QUANTITY":
-            for entity in doc.ents:
-                if entity.label_ == "QUANTITY":
-                    #We want to include all these NE as possible answers
-                    answer = entity.text
-                    q_str = ' '.join(keyQuery)
-                    if answer in q_str:##we dont want entity occured in the question
-                        continue
-                    else:
-                        candidates.append(answer)
         elif answerType == "UNK":
             T = getChunk(question)
             for child in T:
                 if type(child) == Tree:
                     label = child.label()
                     if label == "NP":
-                        answer = ' '.join(x[0] for x in  child.leaves())
+                        answer = child.leaves()[-1][0]
                         if answer in q_str:##we dont want entity occured in the question
                             continue
                         else:

@@ -3,7 +3,7 @@ from nltk.tree import Tree
 import string
 from nltk.corpus import wordnet,stopwords
 import spacy
-# from spacy.tokens import Span
+from nltk.stem import WordNetLemmatizer
 from collections import OrderedDict
 from passage_retrieval import *
 from answer_extraction import *
@@ -110,6 +110,9 @@ def answerTypeDetection(nlp,question):
                 label = child.label()
                 if label == "NP" and flag_what == True:
                     answer = child.leaves()[-1][0]
+                    # answer = ps.stem(answer)
+                    answer = wnl.lemmatize(answer)
+                    print(answer)
                     break
         
         if answer in ['city','country','state','continent','area','province']:
@@ -141,6 +144,7 @@ if __name__ == "__main__":
     # TODO 1. need to clean predict.txt
     nlp = spacy.load('en_core_web_sm')
     questions = read_questions("hw6_data/training/qadata/questions.txt")
+    wnl = WordNetLemmatizer()
     # train_list = []
     for key in questions:
         # train_list.append(questions.get(key))

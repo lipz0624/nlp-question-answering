@@ -1,5 +1,6 @@
 from question_process import *
 from passage_retrieval import *
+from date_extractor import extract_date
 
 def rank_answer(passages,question):
     """
@@ -32,4 +33,23 @@ def rank_answer(passages,question):
                     q_str = ' '.join(keyQuery)
                     if answer in q_str:##we dont want entity occured in the question
                         continue
+        # elif answerType == "DATE":
+            # allDates = []
+            # allDates.extend(extractDate())
+            # if len(allDates)>0:
+            #     answer = allDates[0]
+
     return answer
+
+
+
+nlp = spacy.load('en_core_web_sm')
+text = "what Paige is at hotel yesterday night 12:30 at $2, Janurary 1937"
+# answerTypeDetection(nlp, text)
+doc = nlp(text)
+print("ENTITY:", doc.ents)
+for a in doc.ents:
+    print(a.label_)
+date = extract_date(text)
+print("DATE:", date)
+# print([(t.text, t.dep_, t.head.text) for t in doc if t.dep_ != '-'])

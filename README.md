@@ -12,3 +12,4 @@ Dependencies:
 1. ntlk - need specify what to download
 2. Spacy - ^^
 3. scikit learn (pip install -U scikit-learn) or pip3 
+4. date-extractor (pip install date-extractor)

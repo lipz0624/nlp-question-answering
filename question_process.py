@@ -1,10 +1,9 @@
-# from dataclasses import dataclass
 from nltk import word_tokenize,pos_tag,ne_chunk,RegexpParser
 from nltk.tree import Tree
+import string
 from nltk.corpus import wordnet,stopwords
-import string  # TODO why import string?
 import spacy
-from spacy.tokens import Span
+# from spacy.tokens import Span
 from collections import OrderedDict
 from passage_retrieval import *
 
@@ -99,12 +98,8 @@ def answerTypeDetection(nlp,question):
         return "DATE"
     elif qTag == "what":  
         ##other rules use the headword of the first noun phrase after what
-        t = ne_chunk(qPOS)
+        T = getChunk(question)
         flag_what = False #only become true when after what
-        Pattern = "NP: {<DT>?<JJ|PR.>*<NN|NNS>}"
-        np_parser = RegexpParser(Pattern)
-        T = np_parser.parse(t)
-        # print(T)
         for child in T:
             if type(child) == tuple:
                 if child[1] == 'WP':
@@ -131,6 +126,14 @@ def answerTypeDetection(nlp,question):
         return "UNK"
     else:
         return "UNK"
+
+def getChunk(question):
+    qPOS = pos_tag(word_tokenize(question))
+    t = ne_chunk(qPOS)
+    Pattern = "NP: {<DT>?<JJ|PR.>*<NN|NNS>}"
+    np_parser = RegexpParser(Pattern)
+    T = np_parser.parse(t)
+    return T
 
 if __name__ == "__main__":
     questions = read_questions("hw6_data/training/qadata/questions.txt")

@@ -1,12 +1,12 @@
-# from dataclasses import dataclass
 from nltk import word_tokenize,pos_tag,ne_chunk,RegexpParser
 from nltk.tree import Tree
+import string
 from nltk.corpus import wordnet,stopwords
-import string  # TODO why import string?
 import spacy
-from spacy.tokens import Span
+# from spacy.tokens import Span
 from collections import OrderedDict
 from passage_retrieval import *
+from answer_extraction import *
 
 # @dataclass
 # class Question:
@@ -31,7 +31,7 @@ def read_questions(input_file):
                 sents.remove(element)
         for i in range(len(sents)-1):
             if sents[i][0] == 'Number:':
-                key = sents[i][1]
+                key = int(sents[i][1])
                 value = ' '.join(sents[i+1])
                 value = value.translate(remove_punc) #remove punctuation
                 questions[key] = value
@@ -99,12 +99,9 @@ def answerTypeDetection(nlp,question):
         return "DATE"
     elif qTag == "what":  
         ##other rules use the headword of the first noun phrase after what
-        t = ne_chunk(qPOS)
+        T = getChunk(question)
         flag_what = False #only become true when after what
-        Pattern = "NP: {<DT>?<JJ|PR.>*<NN|NNS>}"
-        np_parser = RegexpParser(Pattern)
-        T = np_parser.parse(t)
-        # print(T)
+        answer = ''
         for child in T:
             if type(child) == tuple:
                 if child[1] == 'WP':
@@ -132,20 +129,32 @@ def answerTypeDetection(nlp,question):
     else:
         return "UNK"
 
+def getChunk(question):
+    qPOS = pos_tag(word_tokenize(question))
+    t = ne_chunk(qPOS)
+    # print("TTTTT:", t)
+    Pattern = "NP:{<DT>?<JJ|PR.>*<NN|NNS>}"
+    np_parser = RegexpParser(Pattern)
+    T = np_parser.parse(t)
+    return T
+
 if __name__ == "__main__":
-    questions = read_questions("hw6_data/training/qadata/questions.txt")
-    train_list = []
-    for key in questions:
-        train_list.append(questions.get(key))
-    question = train_list[0]
-    # print(question)
+    # TODO 1. need to clean predict.txt
     nlp = spacy.load('en_core_web_sm')
-    #question process
-    q_new = queryFormulation(nlp,question)
-    print(q_new)
-    # passage retrieval
-    corpus = createCorpus(q_new, 0, False)
-    retrieved_block = countFeatureVec(corpus)
-    print("Retrieved block\n", retrieved_block)
-    # answer
-    print(answerTypeDetection(nlp,question))
+    questions = read_questions("hw6_data/training/qadata/questions.txt")
+    # train_list = []
+    for key in questions:
+        # train_list.append(questions.get(key))
+        question = questions[key]
+        q_new = queryFormulation(nlp,question)
+        # print(q_new)
+        # passage retrieval
+        corpus = createCorpus(q_new, key, True)
+        retrieved_block = countFeatureVec(corpus)
+        # print("Retrieved block\n", retrieved_block)
+        # answer
+        top_10_ans = rank_answer(retrieved_block, question)
+        # print(top_10_ans)
+        # print(answerTypeDetection(nlp,question))
+        #write ans
+        writeAns("predict.txt", top_10_ans, key)

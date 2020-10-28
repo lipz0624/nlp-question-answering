@@ -19,6 +19,7 @@ def parse(filename):
     for line in f:
       if '<DOCNO>' in line:
         l = line.split()
+        # print(filename, line,l)
         docno = l[1]
         # print(docno)
       elif '<TEXT>' in line:
@@ -30,7 +31,8 @@ def parse(filename):
       elif readmode :
         # TODO find a good way to read, so far: some words are connected
         # text += " ".join(re.findall(r'\w+', line.strip('<P>/')))
-        text += line.strip('</P>')
+        if ('<P>' not in line) and ('</P>' not in line):
+          text += line
 
   # print(docs['LA080989-0132'])
   return docs
@@ -86,8 +88,9 @@ def parseRelevantDocs(filename):
   relevant_docs = {}
   with open(filename, 'r', encoding='utf-8-sig') as f:
     for line in f:
-      l = line.split()
-      relevant_docs[int(l[0])] = l[1]
+      l = line.strip().split()
+      if len(l) > 0 :
+        relevant_docs[int(l[0])] = l[1]
   return relevant_docs
 
 # docs_0 = parse(prefix)

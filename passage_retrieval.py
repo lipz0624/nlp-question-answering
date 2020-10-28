@@ -13,28 +13,30 @@ def parse(filename):
   '''
   # TODO encoding?
   docs = {}
-  with open(filename, 'r', encoding='utf-8-sig') as f:
+  print(filename)
+  with open(filename, 'r', encoding='latin-1') as f:
     text = ""
     readmode = False
     for line in f:
-      if '<DOCNO>' in line:
-        l = line.split()
-        # print(filename, line,l)
-        docno = l[1]
-        # print(docno)
+      temp = re.findall(r"[A-Z]+\d+-\d{2,}", line)
+      if len(temp) > 0:
+        docno = temp[0]
+        # if (docno == 'AP901217-0185'):
+          # print("here", docno)
       elif '<TEXT>' in line:
         readmode = True
       elif '</TEXT>' in line:
         readmode = False
         text = text.replace('\n', ' ')
+        # print(docno)
         docs[docno] = text
       elif readmode :
         # TODO find a good way to read, so far: some words are connected
         # text += " ".join(re.findall(r'\w+', line.strip('<P>/')))
         if ('<P>' not in line) and ('</P>' not in line):
           text += line
-
-  # print(docs['LA080989-0132'])
+  # print(len(docs))
+  # print(docs['AP901217-0185'])
   return docs
 
 
@@ -76,7 +78,8 @@ def countFeatureVec(data):
   # print(len(cos_sort))
   ans = []
   i = 0
-  while len(ans) != R_SIZE:
+  while len(ans) != R_SIZE and i < len(cos_sort):
+    # print(cos_sort[i])
     if data[cos_sort[i]] not in ans:
       ans.append(data[cos_sort[i]])
     i += 1

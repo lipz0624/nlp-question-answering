@@ -50,7 +50,7 @@ def rank_answer(passages,question):
                         candidates.append(answer)
         elif answerType == "QUANTITY":
             for entity in doc.ents:
-                if entity.label_ == "MONEY" or entity.label_ == "CARDINAL" or entity.label_ == "QUANTITY":
+                if entity.label_ == "CARDINAL" or entity.label_ == "QUANTITY":
                     #We want to include all these NE as possible answers
                     answer = entity.text
                     if answer in q_str:##we dont want entity occured in the question

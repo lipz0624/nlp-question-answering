@@ -104,11 +104,10 @@ def answerTypeDetection(nlp,question):
         answer = ''
         for child in T:
             if type(child) == tuple:
-                if child[1] == 'WP':
+                if child[1] in q_Tags:
                    flag_what = True
             if type(child) == Tree:
                 label = child.label()
-                # phrase = ' '.join(x[0] for x in  child.leaves())
                 if label == "NP" and flag_what == True:
                     answer = child.leaves()[-1][0]
                     break
@@ -117,7 +116,7 @@ def answerTypeDetection(nlp,question):
             return "LOCATION"
         elif answer in ['time','year','date','day']:
             return "DATE"
-        elif answer in ['price'] :
+        elif answer in ['price', 'population'] :
             return "QUANTITY"
         return "UNK"
     elif qTag == "how":

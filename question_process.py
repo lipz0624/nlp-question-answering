@@ -24,7 +24,7 @@ def read_questions(input_file):
     """
     questions = {}
     remove_punc = str.maketrans('', '', string.punctuation)
-    with open(input_file, 'r',encoding='utf-8-sig') as file:
+    with open(input_file, 'r', encoding='utf-8-sig') as file:
         sents = [line.strip().split() for line in file]
         for element in sents:
             if len(element) == 0:

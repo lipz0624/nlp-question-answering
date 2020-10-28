@@ -6,13 +6,14 @@ import re
 
 prefix = 'hw6_data/training/topdocs/top_docs.0' # hardcoded here TODO need change
 N = 20 # chunk size
+R_SIZE = 100 # the number of retrieved passage
 
 def parse(filename):
   ''' read topdocs file and return a dictionary {docno : text}
   '''
   # TODO encoding?
   docs = {}
-  with open(filename) as f:
+  with open(filename, 'r', encoding='utf-8-sig') as f:
     text = ""
     readmode = False
     for line in f:
@@ -24,12 +25,12 @@ def parse(filename):
         readmode = True
       elif '</TEXT>' in line:
         readmode = False
-        text = text.replace('\n', ' ')
+        # text = text.replace('\n', ' ')
         docs[docno] = text
       elif readmode :
         # TODO find a good way to read, so far: some words are connected
-        text += " ".join(re.findall(r'\w+', line.strip('<P>/')))
-        # text += line.strip('<P>/.,')
+        # text += " ".join(re.findall(r'\w+', line.strip('<P>/')))
+        text += line.strip('</P>')
 
   # print(docs['LA080989-0132'])
   return docs
@@ -49,7 +50,8 @@ def createCorpus(question, topdocs, id=''):
 
 def chunk(doc):
   l = []
-  words = word_tokenize(doc)
+  # words = word_tokenize(doc)
+  words = doc.split()
   blocks = [words[i:i + N] for i in range(0, len(words), N)]
   for b in blocks:
     l.append(" ".join(b))
@@ -67,7 +69,9 @@ def countFeatureVec(data):
     cos[i] = cos_sim.tolist()[0][0]
   # print(type(cos[1]))
   cos_sort = sorted(cos, key=cos.get, reverse=True)
-  ans = data[cos_sort[0]]
+  ans = []
+  for i in range(R_SIZE):
+    ans.append(data[cos_sort[i]])
   # print(ans)
   # print(X.toarray())
   # print(vocabulary.get_feature_names())

@@ -68,9 +68,17 @@ def rank_answer(passages, keyQuery, answerType):
                     else:
                         candidates.append(answer)
         elif answerType == "QUANTITY":
-            count = 0 #track the num of keyword
             for entity in doc.ents:
                 if entity.label_ == "CARDINAL" or entity.label_ == "QUANTITY":
+                    #We want to include all these NE as possible answers
+                    answer = entity.text
+                    if answer in q_str:##we dont want entity occured in the question
+                        continue
+                    else:
+                        candidates.append(answer)
+        elif answerType == "MONEY":
+            for entity in doc.ents:
+                if entity.label_ == "MONEY" :
                     #We want to include all these NE as possible answers
                     answer = entity.text
                     if answer in q_str:##we dont want entity occured in the question
@@ -83,10 +91,6 @@ def rank_answer(passages, keyQuery, answerType):
             for child in T:
                 if type(child) == Tree:
                     answer = ' '.join(x[0] for x in  child.leaves())
-                    # if answer in q_str:##we dont want entity occured in the question
-                    #     continue
-                    # else:
-                    #     candidates.append(answer)
                     lm = n_gram(passage,5) #5-gram lm
                     for gram in lm:
                         if answer in gram:
@@ -101,7 +105,7 @@ def rank_answer(passages, keyQuery, answerType):
             for i in sort_orders:
                 candidates.append(i[0])
     candidateAnswer = list(OrderedDict.fromkeys(candidates))
-    return candidateAnswer
+    return candidateAnswer[:10]
 
 
 def writeAns(filename, answers, qid):

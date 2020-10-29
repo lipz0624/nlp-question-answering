@@ -126,6 +126,9 @@ def answerTypeDetection(nlp,question):
         return "UNK"
 
 def getChunk(question):
+    """
+    helper method to get NP
+    """
     qPOS = pos_tag(word_tokenize(question))
     t = ne_chunk(qPOS)
     Pattern = "NP:{<DT>?<JJ|PR.>*<NN|NNS>}"
@@ -134,12 +137,12 @@ def getChunk(question):
     return T
 
 if __name__ == "__main__":
-    # TODO 1. need to clean predict.txt
     start_time = time.time()
     nlp = spacy.load('en_core_web_sm')
     train_filename = "hw6_data/training/qadata/questions.txt"
     test_filename = "hw6_data/test/qadata/questions.txt"
     questions = read_questions(train_filename)
+    # questions = read_questions(test_filename)
     for key in questions:
         question = questions[key]
         # question processing

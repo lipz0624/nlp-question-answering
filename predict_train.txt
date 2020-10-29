@@ -1,0 +1,923 @@
+qid 0
+a tearful adieu
+the people
+Edmonton
+a few words
+Bruce McNall
+private plane
+hockey oblivion
+this sport
+day
+a tradition
+qid 1
+piece
+the flower
+similar paintings
+collection
+van
+Crimpen
+opinion
+the grounds
+style
+composition
+qid 2
+allspice
+vanilla
+Last year
+import
+bill
+metric tons
+assorted spices
+beans
+cloves
+Prices
+qid 3
+sales
+greenery
+bunches
+these old trees
+future years
+traditional winter
+Tenbury
+market
+each year
+local mistletoe
+qid 5
+defense
+Illinois
+play
+Madison
+John Mackovic
+the offense
+times
+Illini
+fumbles
+yards
+qid 7
+potatoes
+herb
+bread
+All selections
+sausage
+Italian
+Chinoisia
+debut
+last week
+San
+qid 8
+A curie
+a measure
+radioactivity
+the amount
+radiation
+second
+pounds
+enriched uranium
+qid 9
+creation
+Fabrizio
+Mancinelli
+the cleaning
+Sistine Chapel
+frescoes
+a news
+conference
+Volterra
+own fresco
+qid 10
+men
+treatment
+gray hair
+a color
+feeling
+man
+a peacock
+qid 11
+snails
+others
+Some measure
+irrigation
+hydroelectricity
+lizards
+National Zoo
+a pair
+red wolves
+species
+qid 12
+the Republican National Convention
+Bernard Shaw
+Turner
+Reagan
+White House
+Times
+Ted Turner
+TBS
+ABC News
+Roone Arledge
+qid 13
+Universal Time
+Greenwich Mean Time
+the time
+a standard reference
+the world
+timekeepers
+concerns
+such old names
+Dent
+Frodsham
+qid 14
+Capsaicin
+Peruvian Andes
+Guinea
+Lima
+La Molina
+Peru
+qid 15
+anemia
+red-cell deficiencies
+the malignant overgrowth
+white cells
+leukemia
+drug
+blood
+disorder
+Doctors
+the possibility
+qid 17
+361
+368
+1.02
+521
+1.36
+475
+1.47
+493
+789
+1.60
+qid 18
+Bethel
+Joplin
+Altamont
+qid 19
+Andy Warhol
+Sotheby's
+American
+the San Francisco Museum of Modern Art
+Jackson Pollock: 'Psychoanalytic'
+Claudo Cernuschi
+Duke University Press
+Piet Mondrian
+Arshile
+Gorky
+qid 20
+the Kentucky Horse Park
+Lexington
+the Swaps at
+the Kentucky Derby
+Belmont Park
+qid 21
+an acknowledged role
+Marx
+hits
+an inaccurate image
+a middle-of-the-road popster
+a rock-oriented performer
+wife
+Singer
+doctors
+a kidney
+qid 22
+Four
+two
+millions
+18.04
+17.06
+30
+11.92
+21
+11.47
+9.33
+qid 24
+Brazil
+Asia
+Latin America's
+South America
+qid 26
+Cincinnati
+qid 28
+sun
+cancers
+rays
+Skin
+ultraviolet-radiation exposure
+the kind
+common form
+United States
+exposure
+Squamous cell
+qid 29
+1983
+1936
+1974
+qid 30
+William Gibson
+Cyberspace
+Stuart Allsop
+Fred Cohen
+The Sciences
+the New York Academy of Sciences
+Joyce
+RAID
+the University of California
+Eric Drexler
+qid 31
+animals
+Heidi
+Belgian
+sheepdog
+Malinois
+number
+creatures
+continued existence
+a technique
+human-CPR methods
+qid 34
+people
+United Nations
+United States
+a proposal
+Iraq
+the destruction
+nuclear weapons-grade materials
+ballistic missiles
+biological weapons
+the overall embargo
+qid 35
+The proposal
+stand-alone newscast
+all-news format
+the news
+news
+stories
+controversial reenactments
+stand-up prime-time news
+shows
+comedians
+qid 36
+James Boswell
+Samuel Goldwyn
+A. Scott Berg
+Greene
+Gerassi
+Sartre
+Beauvoir
+Bruce Redford
+Oxford Pounds
+JAMES BOSWELL
+qid 37
+Service Authority for Freeway Emergencies
+the American Red Cross
+the Salvation Army
+Pacific Bell
+Maria Prado
+Magdalena Ortega
+The White House
+Pentagon
+FBI
+Southern California Edison Co.
+qid 39
+Levi
+basic cousin
+Telecaster
+the world
+the early '50s
+a wonderful aural coincidence
+the words
+Strad
+Strat
+much alike
+qid 40
+Peter Butler
+A. Copeland Enterprises Inc.
+Popeyes Famous Fried Chicken
+Henry A. Politz
+Michael Butler
+Johann
+Joann
+Carlo
+Lady Macbeth
+Henry Stram
+qid 41
+Wal-Mart
+Sam
+the Wal-Mart
+Sam Walton
+the Helen's Arts &amp
+Crafts
+qid 43
+St. James
+girlfriend
+musical collaborator
+night
+country
+metal
+rock
+music
+the winners
+Annual Gospel Music
+qid 45
+space
+the court
+Wettre
+Norwegian
+regulations
+a hen
+square inches
+cage
+Actor
+the shadow
+qid 46
+wonders
+The ancient
+Greeks
+the gardens
+the world
+Nebuchadnezzar
+no mention
+detailed writings
+no conclusive evidence
+Iraqi
+qid 47
+those problems
+Pirates
+local corporate owners
+USX Corp.
+PNC
+a baseball
+a field
+dreams
+title
+the fact
+qid 48
+market
+an unusual arrangement
+Merck
+Du Pont
+a major treatment
+Parkinson
+Vaseretic
+a hyper-tension drug
+other products
+order
+qid 49
+U.S.
+Chicago
+Canada
+Wicca
+qid 50
+The man
+a sweater
+football
+legend
+George Gipp
+the university
+Ronald Reagan
+someone
+the extreme
+egos
+qid 51
+years
+death
+master
+people
+emotions
+fans
+Long Beach Arena
+the legacy
+cancer
+qid 52
+Harvard
+West German
+Soviets
+Doubleday
+Clifford Stoll
+Alexander Prechtel
+the Federal Prosecutor's Office
+eastern European
+qid 53
+Joan Lunden
+ABC
+Whittle Communications
+Steve Fox
+McDonald's
+Soviet
+Lunden
+David Hartman
+Charles Gibson
+qid 54
+institutions
+students
+alef-beyz
+other basics
+UCLA
+University
+Judaism
+Workmen
+Circle
+a fraternal organization
+qid 55
+mobsters
+other people
+meetings
+this region
+Wild Acres
+an investigator
+Department
+Housing
+Urban Development
+Texas
+qid 56
+Perky
+morning-show
+host
+a logical choice
+Ultra SlimFast
+post-baby pounds
+Carnival Cruise Lines
+no particular reason
+the TV
+commercials
+qid 57
+the River Limpopo
+Zimbabwe
+Mafikeng
+qid 58
+K
+Connecticut
+caterer
+author
+lavish bestselling
+books
+cooking
+home
+entertaining
+life-style spokesperson
+qid 62
+Jim Henson
+Kermit
+Frog
+Henson
+Piggy
+Mickey Mouse
+Walt Disney World
+Disney
+Animal
+Fozzie Bear
+qid 63
+Orange County Hazardous Materials Team
+HAZMAT
+the county
+Health Care Agency
+division
+environmental health
+hazardous spills
+qid 65
+One
+25 to 35 pounds
+about one pound
+three
+qid 66
+a region
+Mediterranean Basin
+the world
+priorities
+Italy
+unique tourist
+the country
+a year
+London
+Pavillion
+qid 68
+characters
+Vernon
+Grant
+creator
+Kellogg
+Snap
+Crackle
+Pop
+a longtime magazine
+book
+qid 69
+Franz Gruber
+Austrian
+Tender
+Parish
+Cahn
+Disney
+Peter Pan
+qid 70
+the age of 73
+1945
+56-year-old
+this year
+25-year-old
+a year later
+July, 1945
+1978
+1939
+qid 72
+Jones
+George Lucas'
+Klein
+Mario Van Peebles
+Mickey Mouse
+Imperial Shuttle Craft
+Yoda
+Hale
+Ben "Obi-Wan" Kenobi
+Luke Skywalker
+qid 73
+FATMAN
+Jake &amp
+George Bush
+Democratic
+CBS
+Silverman
+ABC
+NBC
+Hunter
+William Conrad
+qid 74
+Netherlands
+New York
+qid 75
+adjacent
+A bill
+the federal government
+acres
+a developer
+land
+House
+floor
+action
+next week
+qid 76
+Stevens
+tribal
+support
+the return
+proposal
+the plan
+a special chief
+a petition
+Sioux
+people
+qid 77
+every day of every year
+33-year
+between the ages of three to eight
+30 years
+last year
+Each year
+the years
+qid 78
+Exmoor
+benign climate
+a freak storm
+people
+houses
+bridges
+streams
+watch
+rivers
+snow
+qid 79
+box
+Name
+Adventures
+Walks
+Runs
+Phone
+Address
+Portola Valley
+Activities
+the month
+qid 80
+Douglas
+Hyde
+scholar
+Irish
+president
+a bad state
+health
+Delegates
+equality
+English
+qid 81
+Terrence Malick's
+Arthur Penn's
+Evarts Ziegler
+Joan Didion
+John  Gregory Dunne
+Robert Towne
+Richard Donner
+Philip Kaufman
+Sydney Pollack
+Mario Puzo
+qid 82
+miniature
+This summer
+North
+S.C.
+a new image
+something
+tourists
+the folks
+Air Force Base
+tourist
+qid 83
+Sunday
+10 years
+some quarters
+the years
+present-day
+this year
+qid 84
+Cher
+Winona Ryder
+Michelle Pfeifer
+Sean Connery
+Julia Roberts
+Academy Award
+Jody Foster
+Thomas Harris
+Michelle Pfeiffer
+qid 86
+NutraSweet
+Food
+Drug Administration
+the use
+low-calorie sweetener
+food-product
+areas
+approval
+products
+many products
+qid 87
+Love Canal
+NIAGRA FALLS
+N.Y.
+Cuba
+the United States
+qid 88
+Brazil
+Uruguay
+Argentina
+Chile
+Haiti
+qid 89
+Justify My Love
+video
+the cable
+music
+station
+last week
+the bra-and-garter-belt-clad singer
+an encounter
+a lover
+real-life boyfriend
+qid 90
+natural allies
+Who
+letters
+television
+personality
+dozens
+a lawyer
+Little Rock
+Ark
+qid 91
+Mike
+Hughes
+a purchase
+the show
+cash
+a maroon
+Indian
+first classic motorcycle
+leather-clad motor
+cyclists
+qid 92
+occasional guest
+appearances
+Jonathan
+character
+the show
+TV
+daughter
+the air
+the end
+the season
+qid 93
+world
+Japan
+Midori Ito
+female free skater
+the world
+next month
+an injury
+U.S.
+women
+a chance
+qid 94
+Brunell
+the major hope
+a vaccine
+Merck
+amp
+children
+The vaccine
+life-threatening chicken-pox attacks
+immune
+system
+qid 95
+Disney
+success
+the middle
+the month
+full-length animated movie
+the story
+a young lion
+the jungle
+a wicked uncle
+father
+qid 99
+the season
+1984
+weekly
+annual
+each year
+qid 100
+Jane Goodall Institute
+Einstein
+naturalist
+the Jane Goodall Institute
+the Tucson Board of Adjustment
+the National Geographic
+Belgian
+the University of Southern California
+TBS
+Beth Ann Krier
+qid 101
+The popular belief
+wife
+the government
+husband
+devastating stroke
+pure nonsense
+a historian
+Princeton University
+professor
+economics
+qid 102
+Calgary
+Alberta Province
+Alberta
+British Columbia
+Japan
+Athabasca
+qid 103
+market
+rivals
+Royal Crown Cola
+the national soft-drink
+a caffeine-free product
+RC100
+sales
+large increases
+other non-caffeine soft drinks
+the timing
+qid 104
+1987
+1991
+Wednesday
+1985
+last year
+Annual
+the fiscal year that ended June 30, 1989
+the last fiscal year
+qid 105
+seeds
+parsley
+this manner
+Mexico
+the chilies
+a sweet ground-beef stuffing
+pineapple
+raisins
+a creamy walnut
+sauce
+qid 106
+British
+Charles Windsor
+The Church of England
+the Crown of the United Kingdom
+Crown
+Elizabeth II
+Queen of the United Kingdom of Great Britain
+Ann Eveleth
+Farouk Chothia
+Zulu
+qid 108
+Billy the Kid
+Texan
+Bonney
+Lincoln Sheriff Pat Garrett
+Lincoln County War
+Hart
+qid 109
+Parish
+Ron Chancey
+Mickey Mouse
+Big Bird
+Kate Smith
+rap group
+Geffen Records
+Walter Turnbull
+bouncy melody
+Katrina
+qid 111
+Wales
+drop outs
+the International Rugby Football Board
+British
+Rugby League World Cup
+Wembley
+Nick Farr-Jones
+David Kirk
+Jim Bolger
+Dean Richards
+qid 112
+1976
+March 1989
+37
+1989
+Thursday
+two-hour
+23-minute
+1980
+this Caligula
+Our century
+qid 113
+epic
+requests
+the stage
+Grapes
+Wrath
+Dust Bowl Okies
+migration
+Promised Land
+California
+the first theater
+qid 114
+Seuss
+Godivas
+Horton Hatches
+Bartholomew
+Oobleck
+Horton Hears
+Ham
+Peter
+Ricardo Hernandez's
+Ted
+qid 115
+characters
+The scheming
+Molly McIntire
+mother
+father
+fights
+the collection
+all-American girl
+plaid
+jumpers
+qid 116
+1995
+next June
+three months
+1992
+September 1991
+next spring
+1990
+qid 117
+airports
+the exemption
+far-reaching regulations
+development
+International Airport
+other parts
+the county
+La Verne
+El Monte
+Burbank

@@ -16,6 +16,18 @@ def n_gram(passage,n):
     output = list(ngrams(tokens, 5))
     return output
 
+def feature(lm, keyQuery, answer):
+    """
+    Question keywords: the number of question keywords in the n-grams
+    """
+    count = 0
+    for gram in lm:
+        if answer in gram:
+            for key in keyQuery:
+                if key in gram:
+                    count +=1
+    return count
+
 def rank_answer(passages, keyQuery, answerType):
     """
     Input: a list of relevant passages(string) and question
@@ -41,17 +53,12 @@ def rank_answer(passages, keyQuery, answerType):
                     else:
                         candidates.append(answer)
         elif answerType == "LOCATION":
-            count = 0
             for entity in doc.ents:
                 if entity.label_ == "GPE" or entity.label_ == "LOC" or entity.label_ == "FAC":
                     #We want to include all these NE as possible answers
                     answer = entity.text
                     lm = n_gram(passage,5) #5-gram lm
-                    for gram in lm:
-                        if answer in gram:
-                            for key in keyQuery:
-                                if key in gram:
-                                    count +=1
+                    count = feature(lm, keyQuery, answer)
                     if answer in q_str:##we dont want entity occured in the question
                         continue
                     else:
@@ -87,16 +94,11 @@ def rank_answer(passages, keyQuery, answerType):
                         candidates.append(answer)
         elif answerType == "UNK":
             T = getChunk(passage)
-            count = 0
             for child in T:
                 if type(child) == Tree:
                     answer = ' '.join(x[0] for x in  child.leaves())
                     lm = n_gram(passage,5) #5-gram lm
-                    for gram in lm:
-                        if answer in gram:
-                            for key in keyQuery:
-                                if key in gram:
-                                    count +=1
+                    count = feature(lm, keyQuery, answer)
                     if answer in q_str:##we dont want entity occured in the question
                         continue
                     else:

@@ -1,6 +1,9 @@
 Paige Li, Yunqi Shen
 HW 6 - NLP
 
+Overview of the code:
+    This is a question-answering system that takes in a question and a collection of relevant documents and ouputs a ranked list of 10 guesses for the answer withour human intervention.
+
 To compile and run use: "python3 question_processing.py" 
 Then it will give you prompt to choose whether you are going to train files mode or test files mode.
 Train -> enter 'y'; Test -> enter 'n'

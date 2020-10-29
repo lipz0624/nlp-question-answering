@@ -1,5 +1,4 @@
 from sklearn.feature_extraction.text import CountVectorizer
-from sklearn.metrics.pairwise import cosine_similarity
 import numpy as np
 from nltk import sent_tokenize
 import re
@@ -32,14 +31,13 @@ def parse(filename):
   return docs
 
 
-def createCorpus(question, index, switch=False):
+def createCorpus(question, filename, switch=False):
   '''
   @param 
   question: keyquery after question processing
   index: question number
   switch: True only for testing training data
   '''
-  filename = prefix + str(index)
   topdocs = parse(filename)
   data_corpus = [' '.join(question)]
   if switch:

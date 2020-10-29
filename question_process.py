@@ -8,6 +8,7 @@ from collections import OrderedDict
 from passage_retrieval import *
 from answer_extraction import *
 import time
+import sys
 
 wnl = WordNetLemmatizer()
 
@@ -137,12 +138,21 @@ def getChunk(question):
     return T
 
 if __name__ == "__main__":
+    mode = input("Train files (y) or Test files (n)?\n")
     start_time = time.time()
     nlp = spacy.load('en_core_web_sm')
-    train_filename = "hw6_data/training/qadata/questions.txt"
-    test_filename = "hw6_data/test/qadata/questions.txt"
-    questions = read_questions(train_filename)
-    # questions = read_questions(test_filename)
+    # test vs train
+    if mode == 'y':
+        filename = "hw6_data/training/qadata/questions.txt"
+        docs_prefix = 'hw6_data/training/topdocs/top_docs.'
+    elif mode == 'n':
+        filename = "hw6_data/test/qadata/questions.txt"
+        docs_prefix = 'hw6_data/test/topdocs/top_docs.'
+    else:
+        print("Wrong mode.")
+        sys.exit(0)
+    # major steps
+    questions = read_questions(filename)
     for key in questions:
         question = questions[key]
         # question processing
@@ -150,7 +160,8 @@ if __name__ == "__main__":
         ans_type = answerTypeDetection(nlp, question)
         print(key, question, ans_type)
         # passage retrieval
-        corpus = createCorpus(q_new, key, False)
+        docs_name = docs_prefix + str(key)
+        corpus = createCorpus(q_new, docs_name, False)
         retrieved_block = passageRetrieve(corpus)
         # answer
         top_10_ans = rank_answer(retrieved_block, q_new, ans_type)

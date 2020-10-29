@@ -7,6 +7,7 @@ from nltk.stem import WordNetLemmatizer
 from collections import OrderedDict
 from passage_retrieval import *
 from answer_extraction import *
+import time
 
 wnl = WordNetLemmatizer()
 
@@ -19,15 +20,14 @@ def read_questions(input_file):
     remove_punc = str.maketrans('', '', string.punctuation)
     with open(input_file, 'r', encoding='utf-8-sig') as file:
         sents = [line.strip().split() for line in file]
-        for element in sents:
-            if len(element) == 0:
-                sents.remove(element)
-        for i in range(len(sents)-1):
-            if sents[i][0] == 'Number:':
-                key = int(sents[i][1])
-                value = ' '.join(sents[i+1])
-                value = value.translate(remove_punc) #remove punctuation
-                questions[key] = value
+    for i in range(len(sents)-1):
+        if len(sents[i]) == 0:
+            continue
+        elif sents[i][0] == 'Number:':
+            key = int(sents[i][1])
+            value = ' '.join(sents[i+1])
+            value = value.translate(remove_punc) #remove punctuation
+            questions[key] = value
     return questions
 
 def queryFormulation(nlp,question):
@@ -48,8 +48,7 @@ def queryFormulation(nlp,question):
     sentence = ' '.join(filter_stopWords) ##sentence after removing stop words
     doc = nlp(sentence)
     for entity in doc.ents: ##second step:select all NNP words(named entities)
-        for ent in entity.text.split():
-            key_query.append(ent)
+        key_query += entity.text.split()
     for word in doc:
         if word.pos_ == 'NOUN' or word.pos_ == 'PROPN':
             if word.n_lefts > 0:
@@ -66,7 +65,7 @@ def answerTypeDetection(nlp,question):
     """
     Determine type of expected answer depending of question type
     Type of answer among following --> 
-    PERSON(include ORGANIZATION), LOCATION, DATE, QUANTITY,UNK
+    PERSON(include ORGANIZATION), LOCATION, DATE, QUANTITY, MONEY, UNK
     """
     q_Tags = ['WP','WDT','WRB'] ##WP ->  who, what WRB -> where, how, when
     qPOS = pos_tag(word_tokenize(question)) #add pos tagging for every word in question
@@ -110,14 +109,18 @@ def answerTypeDetection(nlp,question):
             return "PERSON"
         elif answer in ['time','year','date','day']:
             return "DATE"
-        elif answer in ['price', 'population', 'salary'] :
+        elif answer in ['population'] :
             return "QUANTITY"
+        elif answer in ['price', 'salary']:
+            return "MONEY"
         return "UNK"
     elif qTag == "how":
         if len(qPOS)>1:
             t2 = qPOS[1]
-            if t2[0].lower() in ['many','much']:
-                return "QUANTITY"    
+            if t2[0].lower() in ['many']:
+                return "QUANTITY"
+            elif t2[0].lower() in ['much']:
+                return "MONEY"        
         return "UNK"
     else:
         return "UNK"
@@ -136,13 +139,16 @@ if __name__ == "__main__":
     train_filename = "hw6_data/training/qadata/questions.txt"
     test_filename = "hw6_data/test/qadata/questions.txt"
     questions = read_questions(train_filename)
-    wnl = WordNetLemmatizer()
     for key in questions:
         question = questions[key]
+        # question processing
         q_new = queryFormulation(nlp,question)
+        ans_type = answerTypeDetection(nlp, question)
+        print(key, question, ans_type)
+        # passage retrieval
         corpus = createCorpus(q_new, key, False)
-        retrieved_block = countFeatureVec(corpus)
+        retrieved_block = passageRetrieve(corpus)
         # answer
-        top_10_ans = rank_answer(retrieved_block, question)
+        top_10_ans = rank_answer(retrieved_block, q_new, ans_type)
         #write ans
         writeAns("predict.txt", top_10_ans, key)

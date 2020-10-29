@@ -4,9 +4,10 @@ from nltk import word_tokenize
 # from gensim.models import Word2Vec
 import re
 
-prefix = 'hw6_data/training/topdocs/top_docs.' # hardcoded here TODO need change
+prefix = 'hw6_data/training/topdocs/top_docs.' # TODO test vs train
+# prefix = 'hw6_data/test/topdocs/top_docs.' 
 N = 30 # chunk size
-R_SIZE = 30 # the number of retrieved passage
+R_SIZE = 35 # the number of retrieved passage
 
 def parse(filename):
   ''' read topdocs file and return a dictionary {docno : text}

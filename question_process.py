@@ -17,6 +17,8 @@ from answer_extraction import *
 #     answerType: str
 #     focus: str
 
+wnl = WordNetLemmatizer()
+
 def read_questions(input_file):
     """
     read and record every question in the input file and record its number as a value
@@ -104,7 +106,7 @@ def answerTypeDetection(nlp,question):
         answer = ''
         for child in T:
             if type(child) == tuple:
-                if child[1] in ['WP', 'WDT']:
+                if child[1] in q_Tags:
                    flag_what = True
             if type(child) == Tree:
                 label = child.label()
@@ -112,10 +114,10 @@ def answerTypeDetection(nlp,question):
                     answer = child.leaves()[-1][0]
                     # answer = ps.stem(answer)
                     answer = wnl.lemmatize(answer)
-                    print(answer)
+                    # print(answer)
                     break
         
-        if answer in ['city','country','state','continent','area','province', 'cities']:
+        if answer in ['city','country','state','continent','area','province']:
             return "LOCATION"
         elif answer in ['king', 'name', 'nationality']:
             return "PERSON"
@@ -145,7 +147,9 @@ def getChunk(question):
 if __name__ == "__main__":
     # TODO 1. need to clean predict.txt
     nlp = spacy.load('en_core_web_sm')
-    questions = read_questions("hw6_data/training/qadata/questions.txt")
+    train_filename = "hw6_data/training/qadata/questions.txt"
+    test_filename = "hw6_data/test/qadata/questions.txt"
+    questions = read_questions(trian_filename)
     wnl = WordNetLemmatizer()
     # train_list = []
     for key in questions:

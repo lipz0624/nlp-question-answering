@@ -16,7 +16,7 @@ def n_gram(passage,n):
     output = list(ngrams(tokens, 5))
     return output
 
-def rank_answer(passages,question):
+def rank_answer(passages, keyQuery, answerType):
     """
     Input: a list of relevant passages(string) and question
     Features for ranking candidate answers:
@@ -25,14 +25,10 @@ def rank_answer(passages,question):
     3. add other featuress to improve the performance of answer ranking
     """
     candidates = []
-    ##expected answer type
-    answerType = answerTypeDetection(nlp,question)
-    print(question, answerType) ##only use for check
-    keyQuery = queryFormulation(nlp,question)
     q_str = ' '.join(keyQuery)
     possible_ans = {} #store possible answers for quantity;key-->answer;value-->score
     for passage in passages:#every passage(string)
-        if len(candidates) == 10:
+        if len(candidates) > 10:
             break
         doc = nlp(passage)
         if answerType == "PERSON":

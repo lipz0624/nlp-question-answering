@@ -135,6 +135,7 @@ def getChunk(question):
 
 if __name__ == "__main__":
     # TODO 1. need to clean predict.txt
+    start_time = time.time()
     nlp = spacy.load('en_core_web_sm')
     train_filename = "hw6_data/training/qadata/questions.txt"
     test_filename = "hw6_data/test/qadata/questions.txt"
@@ -152,3 +153,5 @@ if __name__ == "__main__":
         top_10_ans = rank_answer(retrieved_block, q_new, ans_type)
         #write ans
         writeAns("predict.txt", top_10_ans, key)
+    elapsed_time = time.time() - start_time
+    print(' Final Took {:.03f} seconds'.format(elapsed_time))

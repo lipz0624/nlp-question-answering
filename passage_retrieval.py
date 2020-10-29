@@ -1,14 +1,13 @@
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 import numpy as np
-from nltk import word_tokenize
+from nltk import sent_tokenize
 import re
 import time
-
 prefix = 'hw6_data/training/topdocs/top_docs.' # train
 # prefix = 'hw6_data/test/topdocs/top_docs.'  # test
 N = 30 # chunk size
-R_SIZE = 35 # the number of retrieved passage
+R_SIZE = 20 # the number of retrieved passage
 
 def parse(filename):
   ''' read topdocs file and return a dictionary {docno : text}
@@ -45,10 +44,14 @@ def createCorpus(question, index, switch=False):
   topdocs = parse(filename)
   data_corpus = [' '.join(question)]
   if switch:
-    data_corpus += chunk(topdocs[relevant[index]])
+    # data_corpus += chunk(topdocs[relevant[index]])
+    data_corpus += sent_tokenize(topdocs[relevant[index]])
+    # data_corpus += sent(topdocs[relevant[index]])
   else:
     for doc in topdocs:
-      data_corpus += chunk(topdocs[doc])
+      # data_corpus += chunk(topdocs[doc])
+      data_corpus += sent_tokenize(topdocs[doc])
+      # data_corpus += sent(topdocs[doc])
   return data_corpus
 
 def chunk(doc):
@@ -66,18 +69,21 @@ def passageRetrieve(data):
   '''
 
   # generate feature vector
-  start_time = time.time()
-  vectorizer=CountVectorizer()
+  # start_time = time.time()
+  vectorizer = CountVectorizer(stop_words='english', binary=True)
   X = vectorizer.fit_transform(data)
   a = X.toarray()
   # cosine similarity
   cos = {}
   for i in range(1, len(a)):
-    cos_sim = 0.0
-    denominator = np.linalg.norm(a[0]) * np.linalg.norm(a[i])
-    if denominator > 0:
-      cos_sim = np.dot(a[0], a[i]) / denominator
-    cos[i] = cos_sim
+    # cos_sim = 0.0
+    # denominator = np.linalg.norm(a[0]) * np.linalg.norm(a[i])
+    # if denominator > 0:
+    #   cos_sim = np.dot(a[0], a[i]) / denominator
+    # cos[i] = cos_sim
+    # cos_sim = cosine_similarity([a[0]], [a[i]])
+    # cos[i] = cos_sim.tolist()[0][0]
+    cos[i] = np.dot(a[0], a[i])
   cos_sort = sorted(cos, key=cos.get, reverse=True)
   # return top passages
   ans = []
@@ -86,8 +92,8 @@ def passageRetrieve(data):
     if data[cos_sort[i]] not in ans:
       ans.append(data[cos_sort[i]])
     i += 1
-  elapsed_time = time.time() - start_time
-  print(' return Took {:.03f} seconds'.format(elapsed_time))
+  # elapsed_time = time.time() - start_time
+  # print(' return Took {:.03f} seconds'.format(elapsed_time))
   return ans
 
 def parseRelevantDocs(filename):

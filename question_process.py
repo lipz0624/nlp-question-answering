@@ -8,15 +8,6 @@ from collections import OrderedDict
 from passage_retrieval import *
 from answer_extraction import *
 
-# @dataclass
-# class Question:
-#     """Class for keeping track of an question's information."""
-#     number: int
-#     query: str
-#     questionType: str
-#     answerType: str
-#     focus: str
-
 wnl = WordNetLemmatizer()
 
 def read_questions(input_file):
@@ -38,7 +29,7 @@ def read_questions(input_file):
                 value = value.translate(remove_punc) #remove punctuation
                 questions[key] = value
     return questions
-#####################Question Processing####################################
+
 def queryFormulation(nlp,question):
     """
     Based on Keyword Selection Algorithm do the query formulation;
@@ -75,19 +66,17 @@ def answerTypeDetection(nlp,question):
     """
     Determine type of expected answer depending of question type
     Type of answer among following --> 
-    PERSON(include ORGANIZATION), LOCATION, DATE, QUANTITY, DEFINITION, ABBREV,UNK
+    PERSON(include ORGANIZATION), LOCATION, DATE, QUANTITY,UNK
     """
-    # t_question = "kind of a sports team is the Wisconsin Badgers?"
     q_Tags = ['WP','WDT','WRB'] ##WP ->  who, what WRB -> where, how, when
     qPOS = pos_tag(word_tokenize(question)) #add pos tagging for every word in question
-    # print(qPOS)
     qTag = None
 
     for token in qPOS:
         if token[1] in q_Tags: #if any pos tag is in the question tags
             qTag = token[0].lower()
             break
-    # print(qTag)
+
     if(qTag == None):
         if len(qPOS) > 1:
             if qPOS[0][0].lower() == 'whats':
@@ -112,14 +101,12 @@ def answerTypeDetection(nlp,question):
                 label = child.label()
                 if label == "NP" and flag_what == True:
                     answer = child.leaves()[-1][0]
-                    # answer = ps.stem(answer)
-                    answer = wnl.lemmatize(answer)
-                    # print(answer)
+                    answer = wnl.lemmatize(answer) #lemmatize the string
                     break
         
         if answer in ['city','country','state','continent','area','province']:
             return "LOCATION"
-        elif answer in ['king', 'name', 'nationality']:
+        elif answer in ['king','nationality']:
             return "PERSON"
         elif answer in ['time','year','date','day']:
             return "DATE"
@@ -138,7 +125,6 @@ def answerTypeDetection(nlp,question):
 def getChunk(question):
     qPOS = pos_tag(word_tokenize(question))
     t = ne_chunk(qPOS)
-    # print("TTTTT:", t)
     Pattern = "NP:{<DT>?<JJ|PR.>*<NN|NNS>}"
     np_parser = RegexpParser(Pattern)
     T = np_parser.parse(t)
@@ -149,21 +135,14 @@ if __name__ == "__main__":
     nlp = spacy.load('en_core_web_sm')
     train_filename = "hw6_data/training/qadata/questions.txt"
     test_filename = "hw6_data/test/qadata/questions.txt"
-    questions = read_questions(trian_filename)
+    questions = read_questions(train_filename)
     wnl = WordNetLemmatizer()
-    # train_list = []
     for key in questions:
-        # train_list.append(questions.get(key))
         question = questions[key]
         q_new = queryFormulation(nlp,question)
-        # print(q_new)
-        # passage retrieval
         corpus = createCorpus(q_new, key, False)
         retrieved_block = countFeatureVec(corpus)
-        # print("Retrieved block\n", retrieved_block)
         # answer
         top_10_ans = rank_answer(retrieved_block, question)
-        # print(top_10_ans)
-        # print(answerTypeDetection(nlp,question))
         #write ans
         writeAns("predict.txt", top_10_ans, key)
